@@ -1,4 +1,4 @@
-package main.java;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import main.java.reader.QTReader;
-import main.java.reader.TreeBasedReader;
+import reader.QTReader;
+import reader.TreeBasedReader;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;

@@ -1,4 +1,4 @@
-package main.java.reader;
+package reader;
 
 import java.util.ArrayList;
 import java.util.List;

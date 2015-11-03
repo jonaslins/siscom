@@ -1,4 +1,4 @@
-package main.java.reader;
+package reader;
 
 import java.util.HashSet;
 import java.util.LinkedList;
