@@ -1,4 +1,4 @@
-package reader;
+package siscom.reader;
 
 import java.util.ArrayList;
 import java.util.HashSet;

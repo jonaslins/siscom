@@ -1,3 +1,4 @@
+package siscom;
 
 
 import java.io.File;
@@ -15,8 +16,13 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import reader.QTReader;
-import reader.TreeBasedReader;
+
+
+
+
+
+
+
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -24,6 +30,11 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+
+import siscom.reader.EomLeeReader;
+import siscom.reader.LowerBoundReader;
+import siscom.reader.QTReader;
+import siscom.reader.TreeBasedReader;
 
 public class Main {
 	
@@ -38,6 +49,63 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
+		printDFSA();
+        
+	}
+	
+	public static void printDFSA() throws Exception{
+		XYSeriesCollection dataset1 = new XYSeriesCollection();
+		
+		XYSeriesCollection dataset2 = new XYSeriesCollection();
+		
+		XYSeriesCollection dataset3 = new XYSeriesCollection();
+		
+		EomLeeReader.runGUI(dataset1, dataset2, dataset3);
+		LowerBoundReader.runGUI(dataset1, dataset2, dataset3);
+		
+		
+		GUI gui = new GUI();
+
+		
+		JFreeChart chart1 = ChartFactory.createXYLineChart(
+        		"Performance of the DFSA's",	// chart title
+        		"No of tags, n",			// x axis label
+        		"No of Slots",	// y axis label
+				dataset1,					// data
+				PlotOrientation.VERTICAL,
+				true,                     	// include legend
+				true,                     	// tooltips
+				false                    	 // urls
+				);
+        
+        JFreeChart chart2 = ChartFactory.createXYLineChart(
+        		"Performance of the DFSA's",	// chart title
+        		"No of tags, n",			// x axis label
+        		"No of Empty Slots",	// y axis label
+				dataset2,					// data
+				PlotOrientation.VERTICAL,
+				true,                     	// include legend
+				true,                     	// tooltips
+				false                    	 // urls
+				);
+        
+        JFreeChart chart3 = ChartFactory.createXYLineChart(
+        		"Performance of the DFSA's",	// chart title
+        		"No of tags, n",			// x axis label
+        		"No of Collision Slots",	// y axis label
+				dataset3,					// data
+				PlotOrientation.VERTICAL,
+				true,                     	// include legend
+				true,                     	// tooltips
+				false                    	 // urls
+				);
+        
+        gui.createChartAndAddLineChart(chart1, 100, 200);
+        gui.createChartAndAddLineChart(chart2, 100, 100);
+        gui.createChartAndAddLineChart(chart3, 100, 200);
+	}
+	
+	public static void printQT() throws Exception{
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		XYSeries serie = new XYSeries("QT");	
 		
@@ -85,8 +153,7 @@ public class Main {
 				);
         
         gui.createChartAndAddLineChart(chart, 200, 200);
-        
-	}	
+	}
 	
 	public static List<String> getTagsFromfile(File file) throws IOException{
 		Path path = Paths.get(file.getParent(), file.getName());
