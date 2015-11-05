@@ -1,5 +1,6 @@
 package reader;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Queue;
 import java.util.Set;
 
 public class QTReader extends TreeBasedReader{
-		
+	
 	public QTReader(List<String> tags) {
 		super(tags);	
 	}
@@ -15,16 +16,15 @@ public class QTReader extends TreeBasedReader{
 	@Override
 	public Set<String> findTags() {
 		Queue<String> Q = new LinkedList<String>();
-		Set<String> M = new HashSet<String>();
 	
-		Q.add("");
+		Q.add("0");
+		Q.add("1");
 		return QT(Q, M);
 	}
 	
 	//QT Original
 	public Set<String> QT(Queue<String> Q, Set<String> M){
 		//if(Q.length()==96) return M;
-		int count = 0;
 		while(!Q.isEmpty()){
 			String query = Q.remove();
 			//bitsTransmittedByReader+=query.length();
@@ -55,7 +55,7 @@ public class QTReader extends TreeBasedReader{
 	}
 	
 	//QT RECURSIVE WITHOUT QUEUE
-	public Set<String> QT(String Q, Set<String> M ){
+	public Set<String> QT(String Q){
 		//if(Q.length()==96) return M;
 		
 		List<String> returnedTags = getTagsFromPrefix(Q);
@@ -67,13 +67,28 @@ public class QTReader extends TreeBasedReader{
 		}else if(returnedTags.size()>1){
 			//System.out.println(Q+"\tcollision");
 			bitsTransmittedByTags += (96 * returnedTags.size());
-			QT(Q+"0", M);
-			QT(Q+"1", M);
+			QT(Q+"0");
+			QT(Q+"1");
 		}else{
 			//System.out.println(Q+"\tno response");
 		}
 		
 		return M;
 	}
+	
+	public List<String> getTagsFromPrefix(String prefix){
+		
+		if(prefix.equals("")) return tags;
+		
+		List<String> returnedTags = new ArrayList<String>(1000);
+		for (String tag : tags) {
+			if(tag.startsWith(prefix)){
+				returnedTags.add(tag);
+			}
+		}
+		
+		return returnedTags;
+
+	}	
 
 }
