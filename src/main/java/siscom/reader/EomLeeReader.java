@@ -3,13 +3,8 @@ package siscom.reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-
-import siscom.GUI;
 
 
 public class EomLeeReader {
@@ -98,25 +93,31 @@ public class EomLeeReader {
 
 	}
 	
-	public static int eomleeEstimator(int collisions, int success, double e, int L) {
+	public static int eomLeeEstimator(int collisions, int success, double e, int L) {
 		
-		double bprox;
-		double yprox;
-		double temp;
-		double backlog;
-		double y1 = 2;
-		double bdenom;
+		double Bk;
+		double Yk;
+		double Yk_aux;
+		double f;
+		
+		double Yk_1 = 2;
 		
 		do {
-			bdenom = ((y1*(double)collisions)+(double)success);
-	        bprox = L/bdenom;
-	        yprox = (1.0-Math.exp((-1.0)/bprox))/(bprox*(1.0-(1.0+ 1.0/bprox)*Math.exp((-1.0)/bprox)));
-	        backlog = yprox*collisions;
-	        temp = y1;
-	        y1 = yprox;
-	    } while (Math.abs(y1-temp)>e);
+			
+			Bk = L 
+				/ ((Yk_1 * (double) collisions) + (double) success);
+			
+			Yk = (1.0 - Math.exp((-1.0) / Bk)) 
+				/ (Bk * (1.0 - (1.0 + 1.0 / Bk) * Math.exp((-1.0) / Bk)));
+			
+			f = Yk * collisions;
+			
+			Yk_aux = Yk_1;
+			Yk_1 = Yk;
+			
+	    } while (Math.abs(Yk_1-Yk_aux)>e);
 		
-		return ((int)Math.round(backlog));
+		return ((int)f);
 	}
 	
 	
@@ -141,7 +142,7 @@ public class EomLeeReader {
 		
 		collisionSlots = collisionSlots + Lc;
 		
-		int newLowerBounds = eomleeEstimator(Lc, Ls, 0.001, frameSize);
+		int newLowerBounds = eomLeeEstimator(Lc, Ls, 0.001, frameSize);
 		
 		return newLowerBounds;
 		

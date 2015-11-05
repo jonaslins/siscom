@@ -3,31 +3,17 @@ package siscom;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
-
-
-
-
-
-
-
-
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -37,19 +23,12 @@ import siscom.reader.QTReader;
 import siscom.reader.TreeBasedReader;
 
 public class Main {
-	
-	static final int TAG_ID_LENGTH = 96;  
-	
-	/*TODO 
-	 * 
-	 * 1. Contagem dos bits trocados leitor<->tags
-	 * 		1. as queries feitas pelo leitor são os bits trocados "leitor->tag"
-	 * 		2. as respostas das tags são os bits trocados "tag->leitor"
-	 * */	
+
 
 	public static void main(String[] args) throws Exception {
 		
 		printDFSA();
+		//printQT();
         
 	}
 	
@@ -100,7 +79,7 @@ public class Main {
 				false                    	 // urls
 				);
         
-        gui.createChartAndAddLineChart(chart1, 100, 200);
+        gui.createChartAndAddLineChart(chart1, 100, 500);
         gui.createChartAndAddLineChart(chart2, 100, 100);
         gui.createChartAndAddLineChart(chart3, 100, 200);
 	}
