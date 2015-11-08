@@ -60,7 +60,7 @@ public class GUI extends JFrame {
 		
 		NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
 		xAxis.setTickUnit(new NumberTickUnit(xTickUnit));
-		xAxis.setAutoRangeIncludesZero(true);
+		xAxis.setLowerBound(100);
 		
 		// change the auto tick unit selection to integer units only...
 		final NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();

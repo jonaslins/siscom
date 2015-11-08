@@ -17,6 +17,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import siscom.reader.ChenReader;
 import siscom.reader.EomLeeReader;
 import siscom.reader.LowerBoundReader;
 import siscom.reader.QTReader;
@@ -41,7 +42,7 @@ public class Main {
 		
 		EomLeeReader.runGUI(dataset1, dataset2, dataset3);
 		LowerBoundReader.runGUI(dataset1, dataset2, dataset3);
-		
+		ChenReader.runGUI(dataset1, dataset2, dataset3);
 		
 		GUI gui = new GUI();
 
@@ -80,7 +81,7 @@ public class Main {
 				);
         
         gui.createChartAndAddLineChart(chart1, 100, 500);
-        gui.createChartAndAddLineChart(chart2, 100, 100);
+        gui.createChartAndAddLineChart(chart2, 100, 500);
         gui.createChartAndAddLineChart(chart3, 100, 200);
 	}
 	
