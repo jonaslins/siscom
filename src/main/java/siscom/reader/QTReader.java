@@ -1,7 +1,6 @@
 package siscom.reader;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -19,12 +18,11 @@ public class QTReader extends TreeBasedReader{
 	
 		Q.add("0");
 		Q.add("1");
-		return QT(Q, M);
+		return QT(Q);
 	}
 	
 	//QT Original
-	public Set<String> QT(Queue<String> Q, Set<String> M){
-		//if(Q.length()==96) return M;
+	public Set<String> QT(Queue<String> Q){
 		while(!Q.isEmpty()){
 			String query = Q.remove();
 			//bitsTransmittedByReader+=query.length();
@@ -34,12 +32,12 @@ public class QTReader extends TreeBasedReader{
 				
 				//System.out.println(query+"\t"+returnedTags.toArray()[0]);
 				M.addAll(returnedTags);
-				bitsTransmittedByTags +=96;
+				bitsTransmittedByTags += K; //k bits
 								
 			}else if(returnedTags.size()>1){
 				
 				//System.out.println(query+"\tcollision");
-				bitsTransmittedByTags += (96 * returnedTags.size());
+				bitsTransmittedByTags += (K * returnedTags.size());
 				Q.add(query+"0");
 				Q.add(query+"1");
 				
@@ -63,12 +61,15 @@ public class QTReader extends TreeBasedReader{
 		if(returnedTags.size()==1){
 			//System.out.println(Q+"\t"+returnedTags.toArray()[0]);
 			M.addAll(returnedTags);
-			bitsTransmittedByTags +=96;
+			bitsTransmittedByTags +=K;//k bits
+			
 		}else if(returnedTags.size()>1){
+			
 			//System.out.println(Q+"\tcollision");
-			bitsTransmittedByTags += (96 * returnedTags.size());
+			bitsTransmittedByTags += (K * returnedTags.size());
 			QT(Q+"0");
 			QT(Q+"1");
+			
 		}else{
 			//System.out.println(Q+"\tno response");
 		}

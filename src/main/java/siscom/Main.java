@@ -28,8 +28,8 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
-		printDFSA();
-		//printQT();
+		//printDFSA();
+		printTreeBased();
         
 	}
 	
@@ -85,7 +85,7 @@ public class Main {
         gui.createChartAndAddLineChart(chart3, 100, 200);
 	}
 	
-	public static void printQT() throws Exception{
+	public static void printTreeBased() throws Exception{
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		XYSeries serie = new XYSeries("QT");	
 		
