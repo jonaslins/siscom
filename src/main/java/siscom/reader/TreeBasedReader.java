@@ -11,7 +11,8 @@ public abstract class TreeBasedReader {
 	List<String> tags;
 	Set<String> M = new HashSet<String>();
 	public int bitsTransmittedByTags=0;
-	
+	public int bitsTransmittedByReader=0;
+	public int steps = 0;
 	
 	
 	public TreeBasedReader(List<String> tags) {

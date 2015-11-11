@@ -24,8 +24,9 @@ public class QTReader extends TreeBasedReader{
 	//QT Original
 	public Set<String> QT(Queue<String> Q){
 		while(!Q.isEmpty()){
+			steps++;
 			String query = Q.remove();
-			//bitsTransmittedByReader+=query.length();
+			bitsTransmittedByReader+=query.length();
 			List<String> returnedTags = getTagsFromPrefix(query);
 			
 			if(returnedTags.size()==1){

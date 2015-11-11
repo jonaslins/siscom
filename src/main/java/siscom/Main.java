@@ -21,6 +21,7 @@ import siscom.reader.ChenReader;
 import siscom.reader.EomLeeReader;
 import siscom.reader.LowerBoundReader;
 import siscom.reader.QTReader;
+import siscom.reader.QwtReader;
 import siscom.reader.TreeBasedReader;
 
 public class Main {
@@ -87,7 +88,17 @@ public class Main {
 	
 	public static void printTreeBased() throws Exception{
 		XYSeriesCollection dataset = new XYSeriesCollection();
-		XYSeries serie = new XYSeries("QT");	
+		XYSeriesCollection dataset2 = new XYSeriesCollection();		
+		XYSeriesCollection dataset3 = new XYSeriesCollection();
+		
+		XYSeries serieQT = new XYSeries("QT");	
+		XYSeries serieQWT = new XYSeries("QwT");
+		
+		XYSeries serieQTReader = new XYSeries("QT");	
+		XYSeries serieQWTReader = new XYSeries("QwT");
+		
+		XYSeries serieQTSteps = new XYSeries("QT");	
+		XYSeries serieQWTSteps = new XYSeries("QwT");
 		
 		for(int N = 100; N<=1000; N+=100){			
 			
@@ -97,16 +108,51 @@ public class Main {
 			if(files.length>0){
 				
 				double bitsTransmittedPerTagSum = 0;
+				double bitsTransmittedPerTagSumQWT = 0;
+				
+				double bitsTransmittedPerReaderSum = 0;
+				double bitsTransmittedPerReaderSumQWT = 0;
+				
+				double stepsQT = 0;
+				double stepsQWT = 0;
+
 				for (int i = 0; i < files.length; i++) {
 					List<String> tags = getTagsFromfile(files[i]);
-					TreeBasedReader reader = new QTReader(tags);
-					Set<String> foundTags = reader.findTags();
-					bitsTransmittedPerTagSum += (reader.bitsTransmittedByTags/((double)N));
+					TreeBasedReader QT = new QTReader(tags);
+					TreeBasedReader QWT = new QwtReader(tags);
+
+					QT.findTags();
+					QWT.findTags();
+					
+					//1
+					bitsTransmittedPerTagSum += (QT.bitsTransmittedByTags/((double)N));
+					bitsTransmittedPerTagSumQWT += (QWT.bitsTransmittedByTags/((double)N));
+					
+					//2
+					bitsTransmittedPerReaderSum+=(QT.bitsTransmittedByReader);
+					bitsTransmittedPerReaderSumQWT+=(QWT.bitsTransmittedByReader);
+					
+					//3
+					stepsQT += QT.steps;
+					stepsQWT += QWT.steps;
+//					System.out.println(QT.steps);
+//					System.out.println(QWT.steps);
 				}
 				
 				double mean = (bitsTransmittedPerTagSum/(double)files.length);
-				serie.add(N, mean);
-				System.out.println("N: "+N+" Bits p/ tag: "+mean);
+				double meanQWT = (bitsTransmittedPerTagSumQWT/(double)files.length);
+				serieQT.add(N, mean);
+				serieQWT.add(N, meanQWT);				
+				
+//				System.out.println(bitsTransmittedPerReaderSum);
+//				System.out.println(bitsTransmittedPerReaderSumQWT);
+				serieQTReader.add(N, bitsTransmittedPerReaderSum/(double)files.length);
+				serieQWTReader.add(N, bitsTransmittedPerReaderSumQWT/(double)files.length);
+				
+				serieQTSteps.add(N, stepsQT/(double)files.length);
+				serieQWTSteps.add(N, stepsQWT/(double)files.length);
+				
+				System.out.println("N: "+N+" Bits p/ tag: "+meanQWT);
 				
 			}
 			
@@ -119,10 +165,10 @@ public class Main {
 		
         GUI gui = new GUI();
         
-        dataset.addSeries(serie); // add curve to chart
-        
+        dataset.addSeries(serieQT); // add curve to chart
+        dataset.addSeries(serieQWT);
         JFreeChart chart = ChartFactory.createXYLineChart(
-        		"Performance of the QT",	// chart title
+        		"",	// chart title
         		"Nº of tags, n",			// x axis label
         		"Transmitted bits per tag",	// y axis label
 				dataset,					// data
@@ -132,7 +178,34 @@ public class Main {
 				false                    	 // urls
 				);
         
-        gui.createChartAndAddLineChart(chart, 200, 200);
+        dataset2.addSeries(serieQTReader);
+        dataset2.addSeries(serieQWTReader);
+        JFreeChart chart1 = ChartFactory.createXYLineChart(
+        		"",	// chart title
+        		"Nº of tags, n",			// x axis label
+        		"Transmitted bits by reader",	// y axis label
+				dataset2,					// data
+				PlotOrientation.VERTICAL,
+				true,                     	// include legend
+				true,                     	// tooltips
+				false                    	 // urls
+				);
+        
+        dataset3.addSeries(serieQTSteps);
+        dataset3.addSeries(serieQWTSteps);
+        JFreeChart chart2 = ChartFactory.createXYLineChart(
+        		"",	// chart title
+        		"Nº of tags, n",			// x axis label
+        		"Steps",	// y axis label
+				dataset3,					// data
+				PlotOrientation.VERTICAL,
+				true,                     	// include legend
+				true,                     	// tooltips
+				false                    	 // urls
+				);
+        gui.createChartAndAddLineChart(chart, 100, 200);
+        gui.createChartAndAddLineChart(chart1, 100, 10000);
+        gui.createChartAndAddLineChart(chart2, 100, 500);
 	}
 	
 	public static List<String> getTagsFromfile(File file) throws IOException{
